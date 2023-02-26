@@ -1,4 +1,5 @@
-| Updated 26.02.2023 | Languages: EN, [FR](/docs/lang/fr/SIMPLEX.md), [CZ](/docs/lang/cs/SIMPLEX.md) |
+| Aktualizováno 26.02.2023 | Jazyky: CZ, [EN](/docs/SIMPLEX.md), [FR](/docs/lang/fr/SIMPLEX.md) |
+
 # SimpleX platform - motivation and comparison
 
 ## Problems

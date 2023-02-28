@@ -1,47 +1,47 @@
 | Aktualizováno 26.02.2023 | Jazyky: CZ, [EN](/docs/SQL.md), [FR](/docs/lang/fr/SQL.md) |
 
-# Accessing messages in the database
+# Přístup ke zprávám v databázi
 
-## Decrypting databases
+## Dešifrování databází
 
-In order to view database data you need to decrypt it first. Install `sqlcipher` using your favorite package manager and run the following commands in the directory with databases:
+Chcete-li zobrazit data v databázi, musíte je nejprve dešifrovat. Nainstalujte `sqlcipher` pomocí svého oblíbeného správce balíčků a v adresáři s databázemi spusťte následující příkazy:
 ```bash
 sqlcipher files_chat.db
 pragma key="youDecryptionPassphrase";
-# Ensure it works fine
+# Ujistěte se, že vše funguje správně
 select * from users;
 ```
 
-If you see `Parse error: no such table: users`, make sure you entered correct passphrase, and you have changed passphrase from random in Android app (if you got this database from Android device, of course).
+Pokud se zobrazí `Parse error: no such table: users`, ujistěte se, že jste zadali správnou přístupovou frázi a že jste ji v aplikaci pro Android změnili z náhodné (pokud jste tuto databázi získali ze zařízení s Androidem, samozřejmě).
 
-## SQL queries
+## SQL dotazy
 
-You can run queries against `direct_messages`, `group_messages` and `all_messages` (or their simpler alternatives `direct_messages_plain`, `group_messages_plain` and `all_messages_plain`), for example:
+Můžete spouštět dotazy proti `direct_messages`, `group_messages` a `all_messages` (nebo jejich jednodušším alternativám `direct_messages_plain`, `group_messages_plain` a `all_messages_plain`), např:
 
 ```sql
--- you can put these or your preferred settings into ~/.sqliterc
--- to persist across sqlite3 client sessions
+-- tato nebo vámi preferovaná nastavení můžete vložit do souboru ~/.sqliterc
+-- aby přetrvaly napříč relacemi klienta sqlite3
 .mode column
 .headers on
 .nullvalue NULL
 
--- simple views into direct, group and all_messages
--- with user's messages deduplicated for group and all_messages;
--- only 'x.msg.new' ("new message") chat events - filters out service events;
--- msg_sent is 0 for received, 1 for sent
+-- jednoduché pohledy na direct, group a all_messages
+-- s deduplikací uživatelských zpráv pro group a all_messages;
+-- pouze události chatu 'x.msg.new' ("nová zpráva") - filtruje události služby;
+-- msg_sent je 0 pro přijaté, 1 pro odeslané
 select * from direct_messages_plain;
 select * from group_messages_plain;
 select * from all_messages_plain;
 
--- query other details of your chat history with regular SQL, for example:
--- files you offered for sending
+-- dotaz na další podrobnosti historie chatu pomocí běžného SQL, například:
+-- soubory, které jste nabídli k odeslání
 select * from direct_messages where msg_sent = 1 and chat_msg_event = 'x.file';
--- everything catherine sent related to cats
+-- vše, co catherine poslala v souvislosti s kočkami
 select * from direct_messages where msg_sent = 0 and contact = 'catherine' and msg_body like '%cats%';
--- all correspondence with alice in #team
+-- veškerá korespondence s alice v #teamu
 select * from group_messages where group_name = 'team' and contact = 'alice';
 
--- aggregate your chat data
+-- shrňte data z chatu
 select contact_or_group, num_messages from (
   select
     contact as contact_or_group, count(1) as num_messages

@@ -1,72 +1,72 @@
 | Aktualizováno 26.02.2023 | Jazyky: CZ, [EN](/docs/WEBRTC.md), [FR](/docs/lang/fr/WEBRTC.md) |
 
-# Using custom WebRTC ICE servers in SimpleX Chat
+# Použití vlastních serverů WebRTC ICE v SimpleX Chat
 
-## Deploy STUN/TURN server
+## Nasazení serveru STUN/TURN
 
-For this guide, we'll be using the most featureful and battle-tested STUN/TURN server implementation – [`coturn`](https://github.com/coturn/coturn) and [`Ubuntu 20.04 LTS`](https://ubuntu.com/download/server) Linux distribution.
+V tomto průvodci budeme používat nejvybavenější a nejosvědčenější implementaci serveru STUN/TURN - [`coturn`](https://github.com/coturn/coturn) a [`Ubuntu 20.04 LTS`](https://ubuntu.com/download/server) distribuci Linuxu.
 
-0. Obtain `stun.$YOUR_DOMAIN` and `turn.$YOUR_DOMAIN` certificates.
+0. Získejte certifikáty `stun.$Vaše_doména` a `turn.$Vaše_doména`.
 
-   We're using [Let's Encrypt](https://letsencrypt.org/getting-started/).
+   Používáme [Let's Encrypt](https://letsencrypt.org/getting-started/).
 
-1. Install `coturn` package from the main repository.
+1. Nainstalujte balíček `coturn` z hlavního repozitáře.
 
 ```sh
-apt update && apt install coturn`
+apt update && apt install coturn`.
 ```
 
-2. Uncomment `TURNSERVER_ENABLED=1` from `/etc/default/coturn`:
+2. Odkomentujte `TURNSERVER_ENABLED=1` z `/etc/default/coturn`:
 
 ```sh
 sed -i '/TURN/s/^#//g' /etc/default/coturn
 ```
 
-3. Configure `coturn` in `/etc/turnserver.conf`:
+3. Konfigurace `coturn` v souboru `/etc/turnserver.conf`:
 
-   Also, please see comments for each individual option.
+   Viz také komentáře k jednotlivým volbám.
 
 ```sh
-# Also listen to 443 port for tls
+# Naslouchejte také na portu 443 pro tls.
 alt-tls-listening-port=443
-# Use fingerprints in the TURN messages
+# Použijte otisky prstů ve zprávách TURN
 fingerprint
-# Use long-term credentials mechanism
+# Použijte mechanismus dlouhodobých pověření
 lt-cred-mech
-# Your credentials
+# Vaše pověření
 user=$YOUR_LOGIN:$YOUR_PASSWORD
-# Your server domain
+# Vaše doména serveru
 server-name=$YOUR_DOMAIN
-# The default realm to be used for the users when no explicit origin/realm relationship was found
+# Výchozí sféra, která bude použita pro uživatele, pokud nebyl nalezen explicitní vztah origin/realm
 realm=$YOUR_DOMAIN
-# Path to your certificates. Make sure they're readable by cotun process user/group
+# Cesta k vašim certifikátům. Ujistěte se, že jsou čitelné pro proces cotun user/group
 cert=/var/lib/turn/cert.pem
 pkey=/var/lib/turn/key.pem
-# Use 2066 bits predefined DH TLS key
+# Použijte 2066 bitů předdefinovaného DH klíče TLS
 dh2066
-# Log to journalctl
+# Přihlaste se do journalctl
 syslog
-# User/group which will be running coturn service
+# Uživatel/skupina, která bude provozovat službu coturn
 proc-user=turnserver
 proc-group=turnserver
-# Disable weak encryption
+# Zakázat slabé šifrování
 no-tlsv1
 no-tlsv1_1
 no-tlsv1_2
 ```
 
-4. Start and enable `coturn` service:
+4. Spusťte a povolte službu `coturn`:
 
 ```sh
 systemctl enable coturn && systemctl start coturn
 ```
 
-5. Optionally, if using `ufw` firewall, open relevant ports:
+5. Pokud používáte firewall `ufw`, otevřete případně příslušné porty:
 
-- **3478** – "plain" TURN/STUN;
-- **5349** – TURN/STUN over TLS;
-- **443** – TURN/STUN over TLS, which can bypass firewalls;
-- **49152:65535** – port range that Coturn will use by default for TURN relay.
+- **3478** - "obyčejný" TURN/STUN;
+- **5349** - TURN/STUN přes TLS;
+- **443** - TURN/STUN přes TLS, který může obejít brány firewall;
+- **49152:65535** - rozsah portů, který bude společnost Coturn ve výchozím nastavení používat pro přenos TURN.
 
 ```sh
 ufw allow 3478 && \
@@ -76,68 +76,67 @@ ufw allow 49152:65535/tcp && \
 ufw allow 49152:65535/udp
 ```
 
-## Configure mobile apps
+## Konfigurace mobilních aplikací
 
-To configure your mobile app to use your server:
+Konfigurace mobilní aplikace pro použití vašeho serveru:
 
-1. Open `Settings / Network & Servers / WebRTC ICE servers` and switch toggle `Configure ICE servers`.
+1. Otevřete `Nastavení / Síť a servery / WebRTC ICE servery` a přepněte přepínač `Konfigurovat ICE servery`.
 
-2. Enter all server addresses in the field, one per line, for example if you servers are on the port 5349:
+2. Do pole zadejte všechny adresy serverů, jednu na řádek, například pokud máte servery na portu 5349:
 
 ```
 stun:stun.example.com:5349
 turn:username:password@turn.example.com:5349
 ```
 
-This is it - you now can make audio and video calls via your own server, without sharing any data with our servers (other than the key exchange with your contact in E2E encrypted messages).
+To je vše - nyní můžete uskutečňovat audio a video hovory prostřednictvím vlastního serveru, aniž byste s našimi servery sdíleli jakákoli data (kromě výměny klíčů s kontaktem v šifrovaných zprávách E2E).
 
-## Troubleshoot
+## Řešení problémů
 
-- **Determine if server is available**:
+- **Zjistěte, zda je server dostupný**:
 
-  Run this command in your terminal:
-
-  ```sh
-  ping <your_ip_or_domain>
-  ```
-
-  If packets being transmitted, server is up!
-
-- **Determine if ports are open**:
-
-  Run this command in your terminal:
+  Spusťte tento příkaz v terminálu:
 
   ```sh
-  nc -zvw10 <your_ip_or_domain> 443 5349
+  ping <vaše_ip_nebo_doména>
   ```
 
-  You should see:
+  Pokud jsou pakety přenášeny, server je v provozu!
+
+- **Zjistěte, zda jsou otevřené porty**:
+
+  Spusťte tento příkaz v terminálu:
+
+  ```sh
+  nc -zvw10 <vaše_ip_nebo_doména> 443 5349
+  ```
+
+  Měli byste vidět:
 
   ```
-  Connection to <your_ip_or_domain> 443 port [tcp/https] succeeded!
-  Connection to <your_ip_or_domain> 5349 port [tcp/*] succeeded!
+  Připojení k portu <vaše_ip_nebo_doména> 443 [tcp/https] se podařilo!
+  Připojení k <vaše_ip_nebo_doména> 5349 port [tcp/*] uspělo!
   ```
 
-- **Test STUN/TURN connectivity**:
+- **Test připojení STUN/TURN**:
 
-  1. Go to [IceTest](https://icetest.info/).
+  1. Přejděte na [IceTest](https://icetest.info/).
 
-  2. In **Build up ICE Server List** section, add:
+  2. Do části **Sestavit seznam serverů ICE** přidejte:
 
-     <img src="./stun_1.png">
+     <img src="./stun_1.png">.
 
-     - `STUN: stun:<your_ip_or_domain>:<port>` and hit `Add STUN`
-     - `TURN: turn:<your_ip_or_domain>:<port>`, `Username: <your_login>`, `Credential: <your_pass>` and hit `Add TURN`
+     - `STUN: stun:<vaše_ip_nebo_doména>:<port>` a stiskněte `Add STUN`.
+     - `TURN: turn:<vaše_ip_nebo_doména>:<port>`, `Username: <vaše_přihlašovací jméno>`, `Credential: <vaš_pas>` a stiskněte `Add TURN`
 
-     Where `<port>` is 443 or 5349.
+     Kde `<port>` je 443 nebo 5349.
 
-  3. You should see your servers in **ICE server list** section. If everything is set up correctly, hit `Start test`:
+  3. Měli byste vidět své servery v sekci **ICE server list**. Pokud je vše správně nastaveno, stiskněte `Start test`:
 
      <img src="./stun_2.png">
 
-  4. In **Results** section, you should see something like this:
+  4. V části **Výsledky** byste měli vidět něco takového:
 
      <img src="./stun_3.png">
 
-     If results show `srflx` and `relay` candidates, everything is set up correctly!
-
+     Pokud výsledky zobrazují kandidáty `srflx` a `relay`, je vše nastaveno správně!

@@ -1,91 +1,91 @@
 | Aktualizováno 26.02.2023 | Jazyky: CZ, [EN](/docs/SIMPLEX.md), [FR](/docs/lang/fr/SIMPLEX.md) |
 
-# SimpleX platform - motivation and comparison
+# Platforma SimpleX - motivace a srovnání
 
-## Problems
+## Problémy
 
-Existing chat platforms and protocols have some or all of the following problems:
+Stávající chatovací platformy a protokoly mají některé nebo všechny následující problémy:
 
-- Lack of privacy of the user profile and contacts (meta-data privacy).
-- No protection (or only optional protection) of [E2EE][1] implementations from MITM attacks via provider.
-- Unsolicited messages (spam and abuse).
-- Lack of data ownership and protection.
-- Complexity of usage for all non-centralized protocols to non-technical users.
+- Nedostatek soukromí uživatelského profilu a kontaktů (soukromí metadat).
+- Žádná ochrana (nebo pouze volitelná ochrana) implementací [E2EE][1] před útoky MITM prostřednictvím poskytovatele.
+- Nevyžádané zprávy (spam a zneužití).
+- Chybějící vlastnictví a ochrana dat.
+- Složitost použití všech necentralizovaných protokolů pro netechnické uživatele.
 
-The concentration of the communication in a small number of centralized platforms makes resolving these problems quite difficult.
+Koncentrace komunikace v malém počtu centralizovaných platforem činí řešení těchto problémů poměrně obtížným.
 
-## Proposed solution
+## Navrhované řešení
 
-Proposed stack of protocols solves these problems by making both messages and contacts stored only on client devices, reducing the role of the servers to simple message relays that only require authorization of messages sent to the queues, but do NOT require user authentication - not only the messages but also the metadata is protected because users do not have any identifiers assigned to them - unlike with any other platforms.
+Navrhovaný zásobník protokolů řeší tyto problémy tím, že zprávy i kontakty jsou uloženy pouze v klientských zařízeních, čímž se role serverů omezuje na pouhé zprostředkovatele zpráv, kteří vyžadují pouze autorizaci zpráv odesílaných do front, ale NEvyžadují autentizaci uživatelů - chráněny jsou nejen zprávy, ale i metadata, protože uživatelé nemají přiřazeny žádné identifikátory - na rozdíl od jiných platforem.
 
-See [SimpleX whitepaper](https://github.com/simplex-chat/simplexmq/blob/master/protocol/overview-tjr.md) for more information on platform objectives and technical design.
+Více informací o cílech a technickém návrhu platformy naleznete v dokumentu [SimpleX whitepaper](https://github.com/simplex-chat/simplexmq/blob/master/protocol/overview-tjr.md).
 
-## Why use SimpleX
+## Proč používat SimpleX
 
-## SimpleX unique approach to privacy and security
+## Jedinečný přístup SimpleX k ochraně soukromí a zabezpečení
 
-Everyone should care about privacy and security of their communications - even ordinary conversations can put you in danger.
+Každý by měl dbát na soukromí a bezpečnost své komunikace - i obyčejné konverzace vás mohou ohrozit.
 
-### Full privacy of your identity, profile, contacts and metadata
+### Úplné soukromí vaší identity, profilu, kontaktů a metadat.
 
-**Unlike any other existing messaging platform, SimpleX has no identifiers assigned to the users** - it does not use phone numbers (like Signal or WhatsApp), domain-based addresses (like email, XMPP or Matrix), usernames (like Telegram), public keys or even random numbers (like all other messengers) to identify its users - we do not even know how many people use SimpleX.
+**Na rozdíl od všech ostatních existujících platforem pro zasílání zpráv nemá SimpleX žádné identifikátory přiřazené uživatelům** - k identifikaci svých uživatelů nepoužívá telefonní čísla (jako Signal nebo WhatsApp), adresy založené na doméně (jako e-mail, XMPP nebo Matrix), uživatelská jména (jako Telegram), veřejné klíče nebo dokonce náhodná čísla (jako všechny ostatní messengery) - ani nevíme, kolik lidí SimpleX používá.
 
-To deliver the messages instead of user identifiers that all other platforms use, SimpleX uses the addresses of unidirectional (simplex) message queues. Using SimpleX is like having a different email address or a phone number for each contact you have, but without the hassle of managing all these addresses. In the near future SimpleX apps will also change the message queues automatically, moving the conversations from one server to another, to provide even better privacy to the users.
+K doručování zpráv místo identifikátorů uživatelů, které používají všechny ostatní platformy, používá SimpleX adresy jednosměrných (simplexních) front zpráv. Používání služby SimpleX je jako mít pro každý kontakt jinou e-mailovou adresu nebo telefonní číslo, ale bez starostí se správou všech těchto adres. V blízké budoucnosti budou aplikace SimpleX také automaticky měnit fronty zpráv a přesouvat konverzace z jednoho serveru na druhý, aby uživatelům poskytly ještě lepší soukromí.
 
-This approach protects the privacy of who are you communicating with, hiding it from SimpleX platform servers and from any observers. You can further improve your privacy by configuring your network access to connect to SimpleX servers via some overlay transport network, e.g. Tor.
+Tento přístup chrání soukromí toho, s kým komunikujete, a skrývá ho před servery platformy SimpleX a před jakýmikoli pozorovateli. Své soukromí můžete dále zlepšit nastavením přístupu k síti tak, abyste se k serverům SimpleX připojovali prostřednictvím některé překryvné transportní sítě, např. sítě Tor.
 
-### The best protection against spam and abuse
+### Nejlepší ochrana proti spamu a zneužití
 
-As you have no identifier on SimpleX platform, you cannot be contacted unless you share a one-time invitation link or an optional temporary user address. Even with the optional user addresses, while they can be used to send spam contact requests, you can change or completely delete it without losing any of your connections.
+Protože na platformě SimpleX nemáte žádný identifikátor, nelze vás kontaktovat, pokud nesdílíte odkaz s jednorázovou pozvánkou nebo volitelnou dočasnou uživatelskou adresu. I v případě volitelných uživatelských adres je sice lze využít k zasílání nevyžádaných kontaktů, ale můžete je změnit nebo zcela odstranit, aniž byste přišli o jakékoli spojení.
 
-### Complete ownership, control and security of your data
+### Úplné vlastnictví, kontrola a zabezpečení vašich údajů
 
-SimpleX stores all user data on client devices, the messages are only held temporarily on SimpleX relay servers until they are received.
+SimpleX ukládá všechna uživatelská data v klientských zařízeních, zprávy jsou pouze dočasně uchovávány na relay serverech SimpleX, dokud nejsou přijaty.
 
-We use portable database format that can be used on all supported devices - we will soon add the ability to export the chat database from the mobile app so it can be used on another device.
+Používáme přenosný formát databáze, který lze použít na všech podporovaných zařízeních - brzy přidáme možnost exportovat databázi chatu z mobilní aplikace, aby ji bylo možné použít na jiném zařízení.
 
-Unlike servers of federated networks (email, XMPP or Matrix), SimpleX servers do not store user accounts, they simply relay messages to the recipients, protecting the privacy of both parties. There are no identifiers or encrypted messages in common between sent and received traffic of the server, thanks to the additional encryption layer for delivered messages. So if anybody is observing server traffic, they cannot easily determine who is communicating with whom (see [SimpleX whitepaper](https://github.com/simplex-chat/simplexmq/blob/master/protocol/overview-tjr.md) for the known traffic correlation attacks).
+Na rozdíl od serverů federativních sítí (e-mail, XMPP nebo Matrix) servery SimpleX neukládají uživatelské účty, pouze předávají zprávy příjemcům, čímž chrání soukromí obou stran. Mezi odesílaným a přijímaným provozem serveru nejsou žádné společné identifikátory ani šifrované zprávy, a to díky dodatečné vrstvě šifrování doručovaných zpráv. Pokud tedy kdokoli sleduje provoz serveru, nemůže snadno zjistit, kdo s kým komunikuje (známé útoky na korelaci provozu viz [SimpleX whitepaper](https://github.com/simplex-chat/simplexmq/blob/master/protocol/overview-tjr.md)).
 
-### Users own SimpleX network
+### Uživatelé vlastní síť SimpleX
 
-You can use SimpleX with your own servers and still communicate with people using the servers that are pre-configured in the apps or any other SimpleX servers.
+Můžete používat SimpleX s vlastními servery a přitom komunikovat s lidmi, kteří používají servery předkonfigurované v aplikacích nebo jakékoli jiné servery SimpleX.
 
-SimpleX platform uses an open protocol and provides SDK to create chat bots, allowing implementation of services that users can interact with via SimpleX Chat apps – we are really looking forward to see what SimpleX services can be built.
+Platforma SimpleX používá otevřený protokol a poskytuje SDK pro vytváření chatovacích botů, což umožňuje implementaci služeb, s nimiž mohou uživatelé komunikovat prostřednictvím aplikací SimpleX Chat - opravdu se těšíme, jaké služby SimpleX bude možné vytvořit.
 
-If you are considering developing with the SimpleX platform, whether for chat bot services for SimpleX app users or to integrate the SimpleX Chat library into your mobile apps, please get in touch for any advice and support.
+Pokud uvažujete o vývoji s platformou SimpleX, ať už jde o služby chatovacích botů pro uživatele aplikací SimpleX, nebo o integraci knihovny SimpleX Chat do vašich mobilních aplikací, obraťte se na nás pro případné rady a podporu.
 
-## Comparison with other protocols
+## Srovnání s jinými protokoly
 
-|                                                |    SimpleX chat    | Signal, big platforms |  XMPP, Matrix   |  P2P protocols  |
+| | SimpleX chat | Signal, big platforms | XMPP, Matrix | P2P protocols |
 | :--------------------------------------------- | :----------------: | :-------------------: | :-------------: | :-------------: |
-| Requires user identifiers                      |    No = private    |    Yes<sup>1</sup>    | Yes<sup>2</sup> | Yes<sup>3</sup> |
-| Possibility of MITM                            |    No = secure     |    Yes<sup>4</sup>    |       Yes       |       Yes       |
-| Dependence on DNS                              |   No = resilient   |          Yes          |       Yes       |       No        |
-| Single operator or network                     | No = decentralized |          Yes          |       No        | Yes<sup>5</sup> |
-| Central component or other network-wide attack |   No = resilient   |          Yes          | Yes<sup>2</sup> | Yes<sup>6</sup> |
+| Vyžaduje uživatelské identifikátory | Ne = private | Ano<sup>1</sup> | Ano<sup>2</sup> | Yes<sup>3</sup> |
+| Možnost MITM útoku | Žádná = bezpečné | Ano<sup>4</sup> | Ano | Ano | Ano |
+| Závislost na DNS | Ne = neumlčitelné | Ano | Ano | Ne |
+| Single operator or network | Ne = decentralizované | Ano | Ne | Ano<sup>5</sup> |
+| Centrální součást nebo jiný celosíťový útok | Ne = neumlčitelné | Ano | Ano<sup>2</sup> | Ano<sup>6</sup> |
 
-1. Usually based on a phone number, in some cases on usernames.
-2. DNS based.
-3. Public key or some other globally unique ID.
-4. If operator’s servers are compromised.
-5. While P2P networks and cryptocurrency-based networks are distributed, they are not decentralized - they operate as a single network, with a single namespace of user addresses.
-6. P2P networks either have a central authority or the whole network can be compromised - see the next section.
+1. Obvykle na základě telefonního čísla, v některých případech na základě uživatelských jmen.
+2. Založeno na DNS.
+3. Veřejný klíč nebo jiné globálně jedinečné ID.
+4. Pokud jsou servery provozovatele kompromitovány.
+5. Sítě P2P a sítě založené na kryptoměnách jsou sice distribuované, ale nejsou decentralizované - fungují jako jediná síť s jediným jmenným prostorem uživatelských adres.
+6. Sítě P2P mají buď centrální autoritu, nebo může být kompromitována celá síť - viz následující část.
 
-## Comparison with [P2P][9] messaging protocols
+## Srovnání s protokoly pro zasílání zpráv [P2P][9].
 
-There are several P2P chat/messaging protocols and implementations that aim to solve privacy and centralisation problem, but they have their own set of problems that makes them less reliable than the proposed design, more complex to implement and analyse and more vulnerable to attacks.
+Existuje několik protokolů P2P pro chatování/zprávy a jejich implementací, jejichž cílem je vyřešit problém soukromí a centralizace, ale mají svůj vlastní soubor problémů, kvůli kterým jsou méně spolehlivé než navrhovaný návrh, složitější na implementaci a analýzu a zranitelnější vůči útokům.
 
-1. [P2P][9] networks use some variant of [DHT][10] to route messages/requests through the network. DHT implementations have complex designs that have to balance reliability, delivery guarantee and latency. The proposed design has both better delivery guarantees and lower latency (the message is passed multiple times in parallel, through one node each time, using servers chosen by the recipient, while in P2P networks the message is passed through `O(log N)` nodes sequentially, using nodes chosen by the algorithm).
+1. Sítě [P2P][9] používají k směrování zpráv/požadavků v síti některou variantu [DHT][10]. Implementace DHT mají složité návrhy, které musí vyvažovat spolehlivost, záruku doručení a latenci. Navrhovaný návrh má lepší záruky doručení i nižší latenci (zpráva je předávána vícekrát paralelně, pokaždé přes jeden uzel, přičemž se používají servery vybrané příjemcem, zatímco v sítích P2P je zpráva předávána přes `O(log N)` uzlů postupně, přičemž se používají uzly vybrané algoritmem).
 
-2. The proposed design, unlike most P2P networks, has no global user identifiers of any kind, even temporary.
+2. Navrhovaný návrh na rozdíl od většiny sítí P2P nemá žádné globální identifikátory uživatelů, a to ani dočasné.
 
-3. P2P itself does not solve [MITM attack][2] problem, and most existing solutions do not use out-of-band messages for the initial key exchange. The proposed design uses out-of-band messages or, in some cases, pre-existing secure and trusted connections for the initial key exchange.
+3. P2P samo o sobě neřeší problém [útoku MITM][2] a většina existujících řešení nepoužívá pro počáteční výměnu klíčů zprávy mimo pásmo. Navrhované řešení využívá pro počáteční výměnu klíčů zprávy mimo pásmo nebo v některých případech již existující bezpečná a důvěryhodná spojení.
 
-4. P2P implementations can be blocked by some Internet providers (like [BitTorrent][11]). The proposed design is transport agnostic - it can work over standard web protocols, and the servers can be deployed on the same domains as the websites.
+4. Implementace P2P mohou být blokovány některými poskytovateli internetu (jako například [BitTorrent][11]). Navrhovaný návrh je transportně agnostický - může fungovat přes standardní webové protokoly a servery mohou být nasazeny na stejných doménách jako webové stránky.
 
-5. All known P2P networks are likely to be vulnerable to [Sybil attack][12], because each node is discoverable, and the network operates as a whole. Known measures to reduce the probability of the Sybil attack either require a centralized component or expensive [proof of work][13]. The proposed design, on the opposite, has no server discoverability - servers are not connected, not known to each other and to all clients. The SimpleX network is fragmented and operates as multiple isolated connections. It makes network-wide attacks on SimpleX network impossible - even if some servers are compromised, other parts of the network can operate normally, and affected clients can switch to using other servers without losing contacts or messages.
+5. Všechny známé sítě P2P jsou pravděpodobně zranitelné vůči [Sybilovu útoku][12], protože každý uzel je zjistitelný a síť funguje jako celek. Známá opatření ke snížení pravděpodobnosti Sybilova útoku buď vyžadují centralizovanou složku, nebo nákladný [proof of work][13]. Navrhovaný návrh naopak nemá žádnou zjistitelnost serverů - servery nejsou propojeny, nejsou známy navzájem ani všem klientům. Síť SimpleX je fragmentovaná a funguje jako několik izolovaných spojení. To znemožňuje útoky na celou síť SimpleX - i když jsou některé servery kompromitovány, ostatní části sítě mohou fungovat normálně a postižení klienti mohou přejít na používání jiných serverů, aniž by ztratili kontakty nebo zprávy.
 
-6. P2P networks are likely to be [vulnerable][14] to [DRDoS attack][15]. In the proposed design clients only relay traffic from known trusted connection and cannot be used to reflect and amplify the traffic in the whole network.
+6. Sítě P2P jsou pravděpodobně [zranitelné][14] vůči [útoku DRDoS][15]. V navrhovaném návrhu klienti pouze předávají provoz ze známého důvěryhodného spojení a nelze je použít k odrážení a zesilování provozu v celé síti.
 
 [1]: https://en.wikipedia.org/wiki/End-to-end_encryption
 [2]: https://en.wikipedia.org/wiki/Man-in-the-middle_attack

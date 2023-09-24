@@ -31,6 +31,8 @@
         
     
         
+    
+        
     >
 
     <head>
@@ -65,6 +67,8 @@
 
     
         
+    
+
     
 
     
@@ -169,6 +173,8 @@
                             
                                 <li><a href="/docs/simplex.html" class=" lg:px-[20px] inline-block whitespace-nowrap">Plateforme SimpleX</a></li>
                             
+                                <li><a href="/docs/directory.html" class=" lg:px-[20px] inline-block whitespace-nowrap">Service de répertoire SimpleX</a></li>
+                            
                                 <li><a href="/docs/android.html" class=" lg:px-[20px] inline-block whitespace-nowrap">Accéder aux fichiers Android</a></li>
                             
                                 <li><a href="/docs/sql.html" class=" lg:px-[20px] inline-block whitespace-nowrap">Accéder à la base de données des chats</a></li>
@@ -180,6 +186,8 @@
                                 <li><a href="/docs/webrtc.html" class=" lg:px-[20px] inline-block whitespace-nowrap">Serveurs WebRTC</a></li>
                             
                                 <li><a href="/docs/translations.html" class=" lg:px-[20px] inline-block whitespace-nowrap">Traduire SimpleX Chat</a></li>
+                            
+                                <li><a href="/downloads/" class=" lg:px-[20px] inline-block whitespace-nowrap">Downloads</a></li>
                             
 
                             <hr class=" h-[1px] w-full dark:opacity-[0.1]">
@@ -202,6 +210,14 @@
                                 <svg class="float-right" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg>
                             </a></li>
                         </ul>
+                    </li>
+
+                    <hr class="dark:opacity-[0.1]" >
+
+                    <li class="nav-link relative ">
+                        <a href="/jobs" class="flex items-center justify-between gap-2 lg:py-5 whitespace-nowrap">
+                            <span class="text-[16px] leading-[26px] tracking-[0.01em] nav-link-text text-black dark:text-white before:bg-black dark:before:bg-white">Join team</span>
+                        </a>                        
                     </li>
 
                     <hr class="dark:opacity-[0.1]" >
@@ -267,6 +283,8 @@
                 
                     
                 
+                    
+                
             </a>
             
             <ul class="flex flex-col items-start gap-2 h-fit absolute top-11 -left-10 bg-white dark:bg-black mt-[10px] py-4 min-w-[170px] rounded-md shadow-[0_0_3px_rgb(60_72_88_/_15%)] sub-menu overflow-auto">
@@ -282,6 +300,8 @@
                                         </a>
                                      
                                 </li>
+                            
+                        
                             
                         
                             
@@ -349,6 +369,8 @@
                         
                             
                         
+                            
+                        
                     
                         
                             
@@ -370,6 +392,8 @@
                                         </a>
                                      
                                 </li>
+                            
+                        
                             
                         
                             
@@ -726,7 +750,7 @@ window.addEventListener('scroll',changeHeaderBg);
                             </div>
                         </div>
                     </div>
-                    <div><p>| 31.01.2023 | FR, <a href="/docs/CLI.html">EN</a>, <a href="/docs/lang/cs/CLI.html">CZ</a> |</p>
+                    <div><p>| 31.01.2023 | FR, <a href="/docs/cli.html">EN</a>, <a href="/docs/lang/cs/cli.html">CZ</a> |</p>
 <h1 id="application-de-terminal-console-simplex-chat-pour-linuxmacoswindows" tabindex="-1">Application de terminal (console) SimpleX Chat pour Linux/MacOS/Windows</h1>
 <h2 id="table-des-matieres" tabindex="-1">Table des matières</h2>
 <ul>
@@ -893,7 +917,7 @@ brew services start tor
 <p>Ouvrir un terminal de commande SQLite :</p>
 <pre><code class="language-sh">sqlite3 ~/.simplex/simplex_v1_chat.db
 </code></pre>
-<p>Voir les <a href="SQL.html">requêtes de message</a> à titre d'exemple.</p>
+<p>Voir les <a href="sql.html">requêtes de message</a> à titre d'exemple.</p>
 <blockquote>
 <p><strong>Veuillez noter :</strong> Les contraintes de clé étrangère SQLite sont désactivées par défaut, et doivent être <strong><a href="https://sqlite.org/foreignkeys.html#fk_enable">activé séparément pour chaque connexion de base de données</a></strong>. Cette dernière peut être réalisée en exécutant la commande <code>PRAGMA foreign_keys = ON;</code> sur une connexion de base de données ouverte. En exécutant des requêtes modifiant les données sans activer les clés étrangères au préalable, vous risquez de mettre votre base de données dans un état inconsistant.</p>
 </blockquote>
